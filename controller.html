@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Controller</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="/socket.io/socket.io.js"></script>
+
+  <style>
+    #controller {
+      display: flex;
+      flex-flow: row wrap;
+      width: 250px;
+      margin: 0 auto;
+    }
+    #controller span {
+      width: 80px;
+      height: 80px;
+    }
+    #controller span.btn {
+      display: table;
+      border: 1px solid black;
+    }
+    #controller span.btn p {
+      display: table-cell;
+      vertical-align: middle;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="controller">
+    <span></span>
+    <span id="up" class="btn"><p>up</p></span>
+    <span></span>
+    <span id="left" class="btn"><p>left</p></span>
+    <span></span>
+    <span id="right" class="btn"><p>right</p></span>
+    <span></span>
+    <span id="down" class="btn"><p>down</p></span>
+    <span></span>
+  </div>
+
+  <script>
+    var socket = io(),
+        path = window.location.pathname,
+        id = path.substring(path.length - 3),
+        up = document.getElementById('up'),
+        left = document.getElementById('left'),
+        right = document.getElementById('right'),
+        down = document.getElementById('down');
+
+    up.addEventListener('click', function(){
+      socket.emit('up', id)
+    })
+    left.addEventListener('click', function(){
+      socket.emit('left', id)
+    })
+    right.addEventListener('click', function(){
+      socket.emit('right', id)
+    })
+    down.addEventListener('click', function(){
+      socket.emit('down', id)
+    })
+
+  </script>
+</body>
+</html>

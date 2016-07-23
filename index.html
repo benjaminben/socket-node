@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Socket-Node</title>
+  <script src="/socket.io/socket.io.js"></script>
+
+  <style>
+    #game {
+      text-align: center;
+    }
+    canvas {
+      width: 80vw;
+      height: 45vw;
+      background: pink;
+    }
+  </style>
+</head>
+<body>
+  <div id="game">
+    <canvas id="canvas"></canvas>
+  </div>
+  <script>
+    var socket = io();
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+
+    var players = [];
+
+    var drawPlayer = function(player){
+      ctx.beginPath();
+      ctx.rect(
+                player.x,
+                player.y,
+                player.width,
+                player.height
+              );
+      ctx.fillStyle = "#000"
+      ctx.fill();
+      ctx.closePath();
+    };
+
+    var gameLoop = function(){
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      players.forEach(function(player){
+        drawPlayer(player)
+      })
+    };
+
+    var run = function(){
+      game = setInterval(gameLoop, 100)
+    }
+
+    socket.on('enter', function(player_list){
+      players = player_list
+    })
+    socket.on('exit', function(player_list){
+      players = player_list
+    })
+    socket.on('update', function(player_list){
+      players = player_list
+    })
+
+    run();
+  </script>
+  <script src="game.js" />
+</body>
+</html>
