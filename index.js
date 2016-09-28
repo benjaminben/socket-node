@@ -10,7 +10,7 @@ app.get('/game.js', function(req, res){
   res.sendFile(__dirname + '/game.js');
 })
 
-app.get('/controller', function(req, res){
+app.get('/remote', function(req, res){
   res.sendFile(__dirname + '/controller.html')
 })
 
@@ -41,14 +41,14 @@ var Player = function(){
 
 io.on('connection', function(socket){
   console.log(socket.request.headers.referer);
-  if( socket.request.headers.referer.indexOf('controller') === -1 ){
+  if( socket.request.headers.referer.indexOf('remote') === -1 ){
     socket.player = new Player();
     players.push(socket.player)
     console.log(players)
-    io.emit('enter', players);
+    io.emit('enter', {players : players, id : socket.player.id});
     var player_index = players.indexOf(socket.player);
 
-    app.get('/controller/' + socket.player.id, function(req, res){
+    app.get('/remote/' + socket.player.id, function(req, res){
       res.sendFile(__dirname + '/controller.html')
     })
     socket.on('disconnect', function(){

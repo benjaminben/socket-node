@@ -19,6 +19,7 @@
 <body>
   <div id="game">
     <canvas id="canvas"></canvas>
+    <h1 id="instructions"></h1>
   </div>
   <script>
     var socket = io();
@@ -51,8 +52,11 @@
       game = setInterval(gameLoop, 100)
     }
 
-    socket.on('enter', function(player_list){
-      players = player_list
+    var game = document.getElementById('game');
+
+    socket.on('enter', function(obj){
+      players = obj.players;
+      document.getElementById('instructions').innerHTML = 'visit /remote/' + obj.id;
     })
     socket.on('exit', function(player_list){
       players = player_list
